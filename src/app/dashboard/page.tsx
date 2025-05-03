@@ -87,18 +87,6 @@ export default function DashboardPage() {
     }
   }
 
-  // ユーザー入力値を数値に変換して、その値を直接API呼び出しに利用
-  const handleUserIdUpdate = async (e:React.FormEvent) => {
-    e.preventDefault()
-    const numericUserId = Number(userIdInput);
-    // アドバイスをクリアする
-    setAdviceText(null);
-    //表示上の更新
-    setUserId(numericUserId.toString());
-    await fetchDataWithId(numericUserId);
-    await fetchEmotionAlertWithId(numericUserId);
-  };
-
   useEffect(() => {
     if (isClient && userId) {
       fetchDataWithId(Number(userId));
