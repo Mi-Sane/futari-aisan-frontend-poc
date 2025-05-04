@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -13,10 +13,8 @@ export default function Register() {
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  // デバッグ用：ビルド時に埋め込まれた値をコンソールに出力
-  useEffect(() => {
-    console.log("▶︎ NEXT_PUBLIC_API_BASE_URL =", baseUrl);
-  }, [baseUrl]);
+  // ※ここでレンダー時に必ず出る
+  console.log("▶︎ NEXT_PUBLIC_API_BASE_URL =", baseUrl);
 
   const [formData, setFormData] = useState({
     user_id: '',
