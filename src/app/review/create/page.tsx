@@ -32,7 +32,7 @@ export default function CreateReviewPage() {
     Badthing_remind: "",
   })
   const router = useRouter()
-  const backendUrl = "https://futariai-back.azurewebsites.net"
+  const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
   // クライアントサイドでのみレンダリングを行うためのフラグ
   useEffect(() => {

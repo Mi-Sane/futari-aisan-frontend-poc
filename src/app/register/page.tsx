@@ -11,6 +11,7 @@ import { AuthContext } from "@/context/AuthContext";
 
 export default function Register() {
   const router = useRouter();
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [formData, setFormData] = useState({
     user_id: '',
     surname: '',
@@ -39,7 +40,7 @@ export default function Register() {
     setError('');
     setMessage('');
     try {
-      const res = await fetch("https://futariai-back.azurewebsites.net/register", {
+      const res = await fetch(`${baseUrl}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
