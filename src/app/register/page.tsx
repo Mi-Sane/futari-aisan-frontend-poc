@@ -43,6 +43,10 @@ export default function Register() {
     setLoading(true);
     setError('');
     setMessage('');
+
+  // デバッグ用ログ：ここは必ず Console に出る
+  console.log("▶︎ FOR DEBUG: POST URL =", `${baseUrl}/register`) 
+  
     try {
       const res = await fetch(`${baseUrl}/register`, {
         method: 'POST',
