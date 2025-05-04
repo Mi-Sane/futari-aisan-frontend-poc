@@ -17,8 +17,8 @@ const zenMaruGothic = Zen_Maru_Gothic({
 });
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_API_BASE_URL
-  //"https://app-002-step3-2-py-oshima10.azurewebsites.net";
+  //process.env.NEXT_PUBLIC_API_BASE_URL
+  "https://futariai-back.azurewebsites.net";
 
 export default function DashboardPage() {
   const [isClient, setIsClient] = useState(false)

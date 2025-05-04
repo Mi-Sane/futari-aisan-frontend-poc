@@ -23,8 +23,8 @@ export default function ConversationPage() {
   const chatContainerRef = useRef(null)
  
 
-  //const backendUrl = "https://app-002-step3-2-py-oshima10.azurewebsites.net"
-  const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+  const backendUrl = "https://futariai-back.azurewebsites.net"
+  //const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
   
 

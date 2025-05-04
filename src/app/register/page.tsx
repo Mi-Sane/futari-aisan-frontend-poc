@@ -37,7 +37,7 @@ export default function Register() {
     setError('');
     setMessage('');
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/register`, {
+      const res = await fetch("https://futariai-back.azurewebsites.net/register", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

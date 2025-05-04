@@ -44,7 +44,7 @@ export default function ReviewPage() {
   // 振り返りデータ
   const [reviews, setReviews] = useState<FormattedReflection[]>([])
 
-  const backendUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+  const backendUrl = "https://futariai-back.azurewebsites.net"
 
   // 振り返りデータを取得する関数
   const fetchReflections = async (includePartner = true) => {
