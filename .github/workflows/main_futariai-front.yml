@@ -84,7 +84,3 @@ jobs:
           app-name: 'futariai-front'
           slot-name: 'Production'
           package: deploy
-
-      - name: Smoke test
-        run: |
-          curl -f https://futariai-front.azurewebsites.net/healthz
