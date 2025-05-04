@@ -1,6 +1,6 @@
-export const dynamic = 'force-dynamic';
-
 "use client"
+
+export const dynamic = 'force-dynamic';
 
 import { LayoutGrid, MessageCircle, RotateCcw, Settings } from "lucide-react";
 import { useContext, useState, useEffect, useRef } from "react"
