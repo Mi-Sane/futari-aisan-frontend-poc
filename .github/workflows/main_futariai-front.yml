@@ -26,6 +26,9 @@ jobs:
       - name: Clean .next cache
         run: rm -rf .next
 
+      - name: Remove old release zip if exists
+        run: rm -f release.zip
+
       - name: Build Next.js app
         run: npm run build
 
@@ -63,18 +66,3 @@ jobs:
 
       - name: Unzip artifact
         run: unzip release.zip
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F686D2E56FDB4ADFB7C0A6F58260E3FE }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_534EFA801138472681C18ACE1C981011 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CDBF8D6190D247C7A1B0ED7980D8B6B1 }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'futariai-front'
-          slot-name: 'Production'
-          package: .
