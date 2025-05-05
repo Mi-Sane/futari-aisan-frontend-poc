@@ -2,19 +2,20 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { useContext } from "react";
+import { useState, useEffect, useContext } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { AuthContext } from "@/context/AuthContext";
 
 export default function Register() {
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  // ※ここでレンダー時に必ず出る
-  console.log("▶︎ NEXT_PUBLIC_API_BASE_URL =", baseUrl);
+  // ✅ クライアント側の Console に出す
+  useEffect(() => {
+    console.log("▶︎ DEBUG: NEXT_PUBLIC_API_BASE_URL =", baseUrl);
+  }, []);
 
   const [formData, setFormData] = useState({
     user_id: '',
@@ -25,10 +26,11 @@ export default function Register() {
     personality: '',
     couple_id: '',
   });
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const { setUserId, setCoupleId } = useContext(AuthContext); // ←追加
+  const { setUserId, setCoupleId } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,10 +45,6 @@ export default function Register() {
     setLoading(true);
     setError('');
     setMessage('');
-
-  // デバッグ用ログ：ここは必ず Console に出る
-  console.log("▶︎ FOR DEBUG: POST URL =", `${baseUrl}/register`) 
-  
     try {
       const res = await fetch(`${baseUrl}/register`, {
         method: 'POST',
@@ -56,25 +54,23 @@ export default function Register() {
         body: JSON.stringify({
           ...formData,
           name: `${formData.surname} ${formData.name}`,
-          user_id: Number(formData.user_id) // 数値に変換
+          user_id: Number(formData.user_id)
         })
       });
-      
+
       const data = await res.json();
-      
+
       if (res.ok) {
-        setUserId(formData.user_id); // user_id は数値のままでも文字列でもOK
+        setUserId(formData.user_id);
         setCoupleId(formData.couple_id);
         setMessage(data.message || '登録が完了しました');
-        // 登録成功後、ログイン画面に遷移（3秒後）
         setTimeout(() => {
           router.push('/login');
         }, 3000);
       } else {
-        // エラーメッセージがオブジェクトの場合に対応
         setError(
-          Array.isArray(data.detail) 
-            ? data.detail.map(err => err.msg).join(', ') 
+          Array.isArray(data.detail)
+            ? data.detail.map(err => err.msg).join(', ')
             : data.detail || 'エラーが発生しました'
         );
       }
@@ -91,19 +87,17 @@ export default function Register() {
       {/* サイドバー */}
       <div className="w-[320px] bg-white p-8 flex flex-col">
         <Link href="/" className="flex items-center gap-2 mb-12">
-          <Image 
-            src="/images/robot-logo.svg" 
-            alt="AIさんのアイコン" 
-            width={40} 
+          <Image
+            src="/images/robot-logo.svg"
+            alt="AIさんのアイコン"
+            width={40}
             height={40}
           />
           <span className="text-xl font-medium">ふたりのAIさん</span>
         </Link>
-        
-        <div className="flex-grow">
-          {/* サイドバーコンテンツ */}
-        </div>
-        
+
+        <div className="flex-grow" />
+
         <div className="mt-auto text-sm text-gray-500">
           <div className="flex gap-6">
             <Link href="/about" className="hover:underline">このアプリについて</Link>
@@ -111,61 +105,49 @@ export default function Register() {
           </div>
         </div>
       </div>
-      
+
       {/* メインコンテンツ */}
       <div className="flex-1 bg-[#fdf6ed] p-8 flex flex-col items-center justify-center">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-medium mb-2">あなたのことを教えてください</h1>
           </div>
-          
+
           <div className="bg-white p-8 rounded-lg shadow-sm">
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <label className="block text-lg mb-4">おなまえ</label>
-                <div className="flex gap-4">
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="名前"
-                    className="flex-1 p-3 border border-gray-200 rounded-md"
-                    required
-                  />
-                
-                </div>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="名前"
+                  className="w-full p-3 border border-gray-200 rounded-md"
+                  required
+                />
               </div>
-              
+
               <div className="mb-6">
                 <label className="block text-lg mb-4">性別</label>
                 <div className="flex gap-4">
                   <button
                     type="button"
                     onClick={() => handleGenderSelect('男')}
-                    className={`flex-1 p-3 border rounded-md ${
-                      formData.gender === '男' 
-                        ? 'bg-[#e07a5f] text-white border-[#e07a5f]' 
-                        : 'bg-white text-gray-700 border-gray-200'
-                    }`}
+                    className={`flex-1 p-3 border rounded-md ${formData.gender === '男' ? 'bg-[#e07a5f] text-white border-[#e07a5f]' : 'bg-white text-gray-700 border-gray-200'}`}
                   >
                     男性
                   </button>
                   <button
                     type="button"
                     onClick={() => handleGenderSelect('女')}
-                    className={`flex-1 p-3 border rounded-md ${
-                      formData.gender === '女' 
-                        ? 'bg-[#e07a5f] text-white border-[#e07a5f]' 
-                        : 'bg-white text-gray-700 border-gray-200'
-                    }`}
+                    className={`flex-1 p-3 border rounded-md ${formData.gender === '女' ? 'bg-[#e07a5f] text-white border-[#e07a5f]' : 'bg-white text-gray-700 border-gray-200'}`}
                   >
                     女性
                   </button>
-                 
                 </div>
               </div>
-              
+
               <div className="mb-6">
                 <label className="block text-lg mb-4">誕生日</label>
                 <input
@@ -177,7 +159,7 @@ export default function Register() {
                   required
                 />
               </div>
-              
+
               <div className="mb-6">
                 <label className="block text-lg mb-4">性格(MBTI)</label>
                 <input
@@ -190,7 +172,7 @@ export default function Register() {
                   required
                 />
               </div>
-              
+
               <div className="mb-6">
                 <label className="block text-lg mb-4">ユーザーID</label>
                 <input
@@ -203,7 +185,7 @@ export default function Register() {
                   required
                 />
               </div>
-              
+
               <div className="mb-6">
                 <label className="block text-lg mb-4">夫婦ID</label>
                 <input
@@ -216,7 +198,7 @@ export default function Register() {
                   required
                 />
               </div>
-              
+
               <div className="mt-8 flex justify-center">
                 <button
                   type="submit"
@@ -227,19 +209,19 @@ export default function Register() {
                 </button>
               </div>
             </form>
-            
+
             {message && (
               <div className="mt-4 p-4 bg-green-100 text-green-800 rounded-md">
                 {message}
               </div>
             )}
-            
+
             {error && (
               <div className="mt-4 p-4 bg-red-100 text-red-800 rounded-md">
                 {typeof error === 'string' ? error : JSON.stringify(error)}
               </div>
             )}
-            
+
             <div className="mt-6 text-center">
               <p className="text-gray-600">
                 すでにアカウントをお持ちの方は
